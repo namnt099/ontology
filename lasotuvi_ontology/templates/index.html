@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html>
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lá số tử vi</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
+    <link href="{% static "style.css" %}" rel="stylesheet">
+    <script src="{% static 'client.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {% comment %} <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link href="{%static "chat/css/bootstrap.min.css"%}" rel="stylesheet" type="text/css" /> {% endcomment %}
+    <link href="{%static "chat/css/main.css"%}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link href="{%static "chat/css/select2.min.css"%}" rel="stylesheet" type="text/css"/>
+    <link href="{%static "chat/css/chatBot.css"%}" rel="stylesheet" type="text/css"/>
+    <link href="{%static "chat/css/timeline.css"%}" rel="stylesheet" type="text/css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+    <script>
+        function generatePDF() {
+            var doc = new jsPDF();
+            doc.fromHTML(document.getElementById("lstv"), // page element which you want to print as PDF
+            15,
+            15, 
+            {
+                'width': 170
+            },
+            function(a) 
+            {
+                doc.save("HTML2PDF.pdf");
+            });
+        }
+    </script>
+</head>
+
+<script>
+    function printPDF() {
+        var printDoc = new jsPDF();
+        printDoc.fromHTML($('#pdf').get(0), 10, 10, {'width': 180});
+        printDoc.autoPrint();
+        printDoc.output("dataurlnewwindow"); // this opens a new popup,  after this the PDF opens the print window view but there are browser inconsistencies with how this is handled
+    }
+    function ConvertPdf(){
+        var doc = new.jsPDF();
+        var elementHTML = document.querySelector("#lstv").innerHTML;
+        var specialElementHandlers = {
+            '#lstv': function(element, renderer){
+                return true;
+            }
+        };
+        doc.fromHTML(
+            element,
+            15,
+            15,
+            {
+                'width': 170
+                'elementHandler': specialElementHandlers
+            }
+        );
+        doc.save('result.pdf');
+    }
+    function myPrint(lstv) {
+        var printdata = document.getElementById(lstv);
+        newwin = window.open("");
+        newwin.document.write(printdata.outerHTML);
+        newwin.print();
+        newwin.close();
+    }
+    function CreatePDFfromHTML() {
+        var HTML_Width = $(".html-content").width();
+        var HTML_Height = $(".html-content").height();
+        var top_left_margin = 15;
+        var PDF_Width = HTML_Width + (top_left_margin * 2);
+        var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        var canvas_image_width = HTML_Width;
+        var canvas_image_height = HTML_Height;
+    
+        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+    
+        html2canvas($(".html-content")[0]).then(function (canvas) {
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+            for (var i = 1; i <= totalPDFPages; i++) { 
+                pdf.addPage(PDF_Width, PDF_Height);
+                pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height*i)+(top_left_margin*4),canvas_image_width,canvas_image_height);
+            }
+            pdf.save("Your_PDF_Name.pdf");
+            $(".html-content").hide();
+        });
+    }
+    function generatePDF() {
+        var doc = new jsPDF();
+        doc.fromHTML(document.getElementById("lstv"), // page element which you want to print as PDF
+        15,
+        15, 
+        {
+            'width': 170
+        },
+        function(a) 
+        {
+            doc.save("HTML2PDF.pdf");
+        });
+    }
+
+    function download1(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+    
+        element.style.display = 'none';
+        document.body.appendChild(element);
+    
+        element.click();
+    
+        document.body.removeChild(element);
+    }
+
+    function beginDownload(){
+
+        // Generate download of the text file with some content
+        var text = document.getElementById('text-content').innerHTML;
+        var filename = "text.txt";
+        download1(filename, text);
+    }
+</script>
+
+<body>
+    <div class="masthead">
+        <div class="container">
+            <h1 class="wordmark">
+                CHƯƠNG TRÌNH GIẢI ĐOÁN TỬ VI
+            </h1>
+            
+        </div>
+    </div>
+    <img src='https://quizviet.com/app/xem-boi-ngay-thang-nam-sinh/img/xem-boi-ngay-thang-nam-sinh.jpg' alt='Tuvi' width="700" height="170"/>
+    <div class="masthead">
+        <div class="container">
+    
+            <div class="formborder">
+                <form id="lstv">
+                    <fieldset>
+                        <legend>NHẬP THÔNG TIN LÁ SỐ</legend>
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Họ tên
+                        </div>
+                        <div class="col col-9">
+                            <input type="text" name="hoten" id="hoten">
+                        </div>
+                    </div>
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Giới tính
+                        </div>
+                        <div class="col col-9">
+                            <select name="gioitinh" id="gioitinh">
+                                <option value="nam">Nam</option>
+                                <option value="nu">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Ngày tháng năm sinh
+                        </div>
+                        <div class="col col-5">
+                            <select name="ngaysinh" id="ngaysinh">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select> /
+                            <select name="thangsinh" id="thangsinh">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select> /
+                            <input type="text" id="namsinh" name="namsinh" placeholder="Năm sinh">
+                        </div>
+
+                        <div class="col col-4">
+                            Âm lịch?
+                            <input type="checkbox" name="amlich">
+                        </div>
+                    </div>
+
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Giờ sinh
+                        </div>
+                        <div class="col col-3">
+                            <select name="giosinh" id="giosinh">
+                                <option selected="selected" value="1">Tí (23g - 1g)</option>
+                                <option value="2">Sửu (1g - 3g)</option>
+                                <option value="3">Dần (3g - 5g)</option>
+                                <option value="4">Mão (5g - 7g)</option>
+                                <option value="5">Thìn (7g - 9g)</option>
+                                <option value="6">Tị (9g - 11g)</option>
+                                <option value="7">Ngọ (11g - 13g)</option>
+                                <option value="8">Mùi (13g - 15g)</option>
+                                <option value="9">Thân (15g - 17g)</option>
+                                <option value="10">Dậu (17g - 19g)</option>
+                                <option value="11">Tuất (19g - 21g)</option>
+                                <option value="12">Hợi (21g - 23g)</option>
+                            </select>
+                        </div>
+
+                        <div class="col col-3">
+                            Múi giờ:
+                            <select name="muigio" id="muigio">
+                                <option value="-12">-12</option>
+                                <option value="-11">-11</option>
+                                <option value="-10">-10</option>
+                                <option value="-9">-9</option>
+                                <option value="-8">-8</option>
+                                <option value="-7">-7</option>
+                                <option value="-6">-6</option>
+                                <option value="-5">-5</option>
+                                <option value="-4">-4</option>
+                                <option value="-3">-3</option>
+                                <option value="-2">-2</option>
+                                <option value="-1">-1</option>
+                                <option value="0">0</option>
+                                <option value="1">+1</option>
+                                <option value="2">+2</option>
+                                <option value="3">+3</option>
+                                <option value="4">+4</option>
+                                <option value="5">+5</option>
+                                <option value="6">+6</option>
+                                <option value="7" selected>+7 (Vietnam)</option>
+                                <option value="8">+8</option>
+                                <option value="9">+9</option>
+                                <option value="10">+10</option>
+                                <option value="11">+11</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Năm xem hạn
+                        </div>
+                        <div class="col col-9"
+                            <select>
+                                <input type="text" id="namxemhan" name="namxemhan" placeholder="Năm xem hạn">
+                            </select>
+                        </div>
+                    </div>
+<!--
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Tài liệu tham khảo
+                        </div>
+                        <div class="col col-9">
+                            <select name="thamkhao" id="thamkhao">
+                                <option value="1">Tất cả</option>
+                                <option value="2">Tử Vi Phú Giải của Thái Vân Trình</option>
+                                <option value="3">Tử Vi Phú Giải của Thái Vân Trình - Tử Vi của Nguyễn Mạnh Bảo</option>
+                                <option value="4">Tử Vi Phú Giải của Thái Vân Trình - Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</option>
+                                <option value="5">Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</option>
+                                <option value="6">Tử vi giảng minh</option>
+                                <option value="7">Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang</option>
+                                <option value="8">Tử Vi Áo Bí Biện Chứng Học</option>
+                                <option value="9">Không rõ nguồn</option>
+                            </select>
+                        </div>
+                    </div>
+                -->
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Tài liệu tham khảo
+                        </div>
+                        <div class="col col-9">
+                            {% comment %} <input type="checkbox" id="thamkhao" name="thamkhao" value="1">
+                            <label for="thamkhao">Tất cả</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="2">
+                            <label for="thamkhao">Tử Vi Phú Giải của Thái Vân Trình</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="3">
+                            <label for="thamkhao">Tử Vi của Nguyễn Mạnh Bảo</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="4">
+                            <label for="thamkhao">Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="5">
+                            <label for="thamkhao">Tử vi giảng minh</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="6">
+                            <label for="thamkhao">Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="7">
+                            <label for="thamkhao">Tử Vi Áo Bí Biện Chứng Học</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="8">
+                            <label for="thamkhao">Linh khu thời mệnh lý của Lê Hưng VKD</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="9">
+                            <label for="thamkhao">Tử Vi Áo Bí</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="10">
+                            <label for="thamkhao">Không rõ nguồn</label><br> {% endcomment %}
+                            <select name="tailieuthamkhao" id="tailieuthamkhao">
+                                <option value="Tất cả">Tất cả</option>
+                                <option value="Trung Châu tử vi đẩu số - Tứ Hóa Phái - Nguyễn Anh Vũ dịch">Trung Châu tử vi đẩu số - Tứ Hóa Phái - Nguyễn Anh Vũ dịch</option>
+                                <option value="Tử Vi Áo Bí">Tử Vi Áo Bí</option>
+                                <option value="Tử vi giảng minh">Tử vi giảng minh</option>
+                                <option value="Linh khu thời mệnh lý của Lê Hưng VKD">Linh khu thời mệnh lý của Lê Hưng VKD</option>
+                                {% comment %} <option value="Tử vi giảng minh - Thiên Phúc Vũ Tiến Phúc">Tử vi giảng minh - Thiên Phúc Vũ Tiến Phúc</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi tinh điển - Vũ Tài Lục">Tử vi tinh điển - Vũ Tài Lục</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi chỉ nam - Song An Đỗ Văn Lưu">Tử vi chỉ nam - Song An Đỗ Văn Lưu</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi đẩu số tinh hoa tập thành - Đại Đức Sơn Nhân">Tử vi đẩu số tinh hoa tập thành - Đại Đức Sơn Nhân</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi nghiệm lý - Cụ Thiên Lương">Tử vi nghiệm lý - Cụ Thiên Lương</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi đẩu số - Cổ Đồ Thư">Tử vi đẩu số - Cổ Đồ Thư</option> {% endcomment %}
+                                {% comment %} <option value="Nghiên cứu tinh mệnh học - Nguyễn Anh Vũ biên soạn">Nghiên cứu tinh mệnh học - Nguyễn Anh Vũ biên soạn</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi đẩu số giải mã đời người - Phan Tử Ngư">Tử vi đẩu số giải mã đời người - Phan Tử Ngư</option> {% endcomment %}
+                                {% comment %} <option value="Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang">Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang</option> {% endcomment %}
+                                {% comment %} <option value="Phú Ma Thị">Phú Ma Thị</option>
+                                <option value="Tử vi đại toàn - Thái Đình Nguyên">Tử vi đại toàn - Thái Đình Nguyên</option>
+                                <option value="Muốn luận đoán đúng tử vi - Hà Vi">Muốn luận đoán đúng tử vi - Hà Vi</option> {% endcomment %}
+                                <option value="- Tử Vi Áo Bí Biện Chứng Học">Tử Vi Áo Bí Biện Chứng Học</option>
+                                <option value=" - Tử Vi Phú Giải của Thái Vân Trình">Tử Vi Phú Giải của Thái Vân Trình</option>
+                                <option value=" - Tử Vi của Nguyễn Mạnh Bảo">Tử Vi của Nguyễn Mạnh Bảo</option>
+                                <option value=" - Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang">Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid">
+                        <div class="col col-3">
+                            <input type="button" class="button primary" value="Lập lá số" id="laplaso">
+                        </div>
+                        <div class="col col-6">
+                        </div>
+                        <div class="col col-3">
+                            <input type="button" onclick="window.print()" value="Print">
+                            <!--<button type="button" onclick="beginDownload()">Download</button>-->
+                        </div>
+                    </div>
+                </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} <div class="masthead">
+        <div class="container">
+            <h1 class="wordmark">
+                LÁ SỐ TỬ VI
+            </h1>
+        </div>
+    </div> {% endcomment %}
+    <h1 class="wordmark">
+        LÁ SỐ TỬ VI
+    </h1>
+    <div class="anlaso laso border" id="laso">
+        <div class="grid">
+            <div class="col col-3">
+                <div class="container">
+                    <div class="grid diaCung border-bottom" cung-id="6" id="cungTy5">Tỵ</div>
+                    <div class="grid diaCung border-bottom" cung-id="5" id="cungThin">Thìn</div>
+                    <div class="grid diaCung border-bottom inset-border" cung-id="4" id="cungMao">Mão</div>
+                    <div class="grid diaCung" cung-id="3" id="cungDan">Dần</div>
+                </div>
+            </div>
+            <div class="col col-6">
+                <div class="container">
+                    <div class="grid">
+                        <div class="col col-6 diaCung border-left" cung-id="7" id="cungNgo">Ngọ</div>
+                        <div class="col col-6 diaCung border-left" cung-id="8" id="cungMui">Mùi</div>
+                    </div>
+
+                    <div class="grid thienBan border-top border-left border-bottom border-right" id="thienBan">
+
+                    </div>
+                    <div class="grid">
+                        <div class="col col-6 diaCung border-left" cung-id="2" id="cungSuu">
+                            Sửu
+                        </div>
+                        <div class="col col-6 diaCung border-left" cung-id="1" id="cungTy1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="container">
+                    <div class="grid diaCung border-left border-bottom" cung-id="9" id="cungThan">Thân</div>
+                    <div class="grid diaCung border-bottom" cung-id="10" id="cungDau">Dậu</div>
+                    <div class="grid diaCung border-bottom" cung-id="11" id="cungTuat">Tuất</div>
+                    <div class="grid diaCung border-left" cung-id="12" id="cungHoi">Hợi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} <div class="masthead">
+        <div class="container">
+            <h1 class="wordmark">
+                GIẢI ĐOÁN LÁ SỐ
+            </h1>
+        </div>
+    </div> {% endcomment %}
+    <h1 class="wordmark">
+        GIẢI ĐOÁN LÁ SỐ
+    </h1>
+    <div class="anlaso" id="vunggiaidoan">
+        <div class="noi-dung" id="noi-dung">
+            <!--<h3 class="mucluc" ><a href="#" name="tong-quan">TỔNG QUAN</a> </h3>
+            <div class="tong-quan"></div> -->
+
+            <h3 class="mucluc"><a href="#" name="cung-menh">CUNG MỆNH</a> </h3>
+            <div class="cung-menh"></div>
+
+            <h3 class="mucluc">CHU KỲ CỦA TỬ VI TẠI MỆNH CUNG</a> </h3>
+            <div class="chu-ki-tu-vi"> </div>
+
+            <h3 class="mucluc"><a href="#" name="cung-than">CUNG THÂN</a> </h3>
+            <div class="cung-than"> </div>
+
+            <h3 class="mucluc"><a href="#" name="cung-quan-loc">CUNG QUAN LỘC</a> </h3>
+            <div class="cung-quan-loc"></div> 
+
+            <h3 class="mucluc"><a href="#" name="cung-tai-bach">CUNG TÀI BẠCH</a> </h3>
+            <div class="cung-tai-bach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-thien-di">CUNG THIÊN DI</a> </h3>
+            <div class="cung-thien-di"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phuc-duc">CUNG PHÚC ĐỨC</a> </h3>
+            <div class="cung-phuc-duc"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phu-the">CUNG PHU THÊ</a> </h3>
+            <div class="cung-phu-the"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-tu-tuc">CUNG TỬ TỨC</a> </h3>
+            <div class="cung-tu-tuc"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-dien-trach">CUNG ĐIỀN TRẠCH</a> </h3>
+            <div class="cung-dien-trach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-tat-ach">CUNG TẬT ÁCH</a> </h3>
+            <div class="cung-tat-ach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phu-mau">CUNG PHỤ MẪU</a> </h3>
+            <div class="cung-phu-mau"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-huynh-de">CUNG HUYNH ĐỆ</a> </h3>
+            <div class="cung-huynh-de"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-no-boc">CUNG NÔ BỘC</a> </h3>
+            <div class="cung-no-boc"> </div>
+            
+            <h3 class="mucluc"><a href="#" name="giai-doan-chung">GIẢI ĐOÁN CHUNG</a> </h3>
+            <div class="giai-doan-chung"> </div>
+            <!--
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi1">CUNG TÝ</a> </h3>
+            <div class="chu-ki-tu-vi1"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi2">CUNG SỬU</a> </h3>
+            <div class="chu-ki-tu-vi2"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi3">CUNG DẦN</a> </h3>
+            <div class="chu-ki-tu-vi3"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi4">CUNG MÃO</a> </h3>
+            <div class="chu-ki-tu-vi4"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi5">CUNG THÌN</a> </h3>
+            <div class="chu-ki-tu-vi5"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi6">CUNG TỴ</a> </h3>
+            <div class="chu-ki-tu-vi6"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi7">CUNG NGỌ</a> </h3>
+            <div class="chu-ki-tu-vi7"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi8">CUNG MÙI</a> </h3>
+            <div class="chu-ki-tu-vi8"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi9">CUNG THÂN</a> </h3>
+            <div class="chu-ki-tu-vi9"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi10">CUNG DẬU</a> </h3>
+            <div class="chu-ki-tu-vi10"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi11">CUNG TUẤT</a> </h3>
+            <div class="chu-ki-tu-vi11"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi12">CUNG HỢI</a> </h3>
+            <div class="chu-ki-tu-vi12"> </div>
+            
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi12">MỆNH CUNG</a> </h3> -->
+
+            <h3 class="mucluc"><a href="#" name="nu-menh">NỮ MỆNH</a> </h3>
+            <div class="nu-menh"> </div>
+            <!-- <h3 class="mucluc"><a href="#" name="giai-doan-chung">GIẢI ĐOÁN CHUNG</a> </h3>
+            <div class="giai-doan-chung"> </div> -->
+
+            <!-- <h3 class="mucluc"><a href="#" name="loi-khuyen">LỜI KHUYÊN ỨNG XỬ</a> </h3>
+            <div class="loi-khuyen"></div> -->
+
+            <!--<h3 class="mucluc"><a href="#" name='phu-giai'>KHÁC</a> </h3>
+            <div class="phu-giai"></div> -->
+
+            <h3 class="mucluc">ĐẠI VẬN</h3>
+
+            <div class="ten-dv1"></div>
+            <div class="dai-van1"></div>
+
+            <div class="ten-dv2"></div>
+            <div class="dai-van2"></div> 
+
+            <div class="ten-dv3"></div>
+            <div class="dai-van3"></div> 
+
+            <div class="ten-dv4"></div>
+            <div class="dai-van4"></div>
+
+            <div class="ten-dv5"></div>
+            <div class="dai-van5"></div>
+
+            <div class="ten-dv6"></div>
+            <div class="dai-van6"></div>
+
+            <div class="ten-dv7"></div>
+            <div class="dai-van7"></div>
+
+            <div class="ten-dv8"></div>
+            <div class="dai-van8"></div>
+
+            <div class="ten-dv9"></div>
+            <div class="dai-van9"></div>
+
+            <div class="ten-dv10"></div>
+            <div class="dai-van10"></div>
+
+            <div class="ten-dv11"></div>
+            <div class="dai-van11"></div>
+
+            <div class="ten-dv12"></div>
+            <div class="dai-van12"></div>
+
+            <h3 class="mucluc"><a href="#" name='van-han'>VẬN HẠN NĂM XEM HẠN</a> </h3>
+            <div class="van-han"></div>
+
+
+        </div>
+    </div>
+
+    <!-- Chat bot UI start -->
+    <div class="chat-screen">
+        <div class="chat-header">
+            <div class="chat-header-title">
+                Let’s chat? - We're online
+            </div>            
+        </div>
+        <div class="chat-mail">
+            <div class="row">
+                <div class="col-md-12 text-center mb-2">
+                    <p>Xin chào.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button class="btn btn-primary btn-rounded btn-block">Start Chat</button>
+                </div>
+            <div class="col-md-12">
+                <div class="powered-by"></div>
+            </div>
+            </div>
+        </div>
+        <div class="chat-body hide" id="chat-body">
+            {% comment %} <div class="chat-start">Monday, 1:27 PM</div> {% endcomment %}
+            
+            {% comment %} <div class="chat-bubble you you-keypress">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto;display: block;shape-rendering: auto;width: 43px;height: 20px;" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <circle cx="0" cy="44.1678" r="15" fill="#ffffff">
+                        <animate attributeName="cy" calcMode="spline" keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5" repeatCount="indefinite" values="57.5;42.5;57.5;57.5" keyTimes="0;0.3;0.6;1" dur="1s" begin="-0.6s"></animate>
+                    </circle> <circle cx="45" cy="43.0965" r="15" fill="#ffffff">
+                    <animate attributeName="cy" calcMode="spline" keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5" repeatCount="indefinite" values="57.5;42.5;57.5;57.5" keyTimes="0;0.3;0.6;1" dur="1s" begin="-0.39999999999999997s"></animate>
+                </circle> <circle cx="90" cy="52.0442" r="15" fill="#ffffff">
+                    <animate attributeName="cy" calcMode="spline" keySplines="0 0.5 0.5 1;0.5 0 1 0.5;0.5 0.5 0.5 0.5" repeatCount="indefinite" values="57.5;42.5;57.5;57.5" keyTimes="0;0.3;0.6;1" dur="1s" begin="-0.19999999999999998s"></animate>
+                </circle></svg>
+            </div> {% endcomment %}
+        </div>
+        <div class="chat-input hide">
+            <input class="input-messenger" type="text" placeholder="Type a message...">
+            <div class="input-action-icon">
+                {% comment %} <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg></a> {% endcomment %}
+                <a class="submit-messenger" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></a>
+            </div>
+        </div>
+        <div class="chat-session-end hide">
+            <h5>This chat session has ended</h5>
+            <p>Thank you for chatting with us, If you can take a minute and rate this chat:</p>
+            <div class="rate-me">
+                <div class="rate-bubble great">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg></span>
+                    Great
+                </div>
+                <div class="rate-bubble bad">
+                    <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path></svg></span>
+                    Bad
+                </div>
+            </div>
+            <a class="transcript-chat">Need a Transcript?</a>
+        </div>
+    </div>
+    <div class="chat-bot-icon">
+        <img src="{%static "chat/img/we-are-here.svg"%}"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square animate"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x "><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+    <!-- Chat Bot UI Ends -->
+    <!-- Time line Html Start -->
+    <h1 class="hide">Responsive Timeline using Flexbox</h1>
+    <div class="timeline hide">
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <img src="stylesheet/images/cities/delhi.svg"/>
+                <div>
+                    January 2019
+                </div>
+            </div>
+            <div class="timeline-content">
+                <h2>Journey Start <span>(Delhi)</span></h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad saepe nulla quibusdam ut. Beatae, facere sequi blanditiis porro suscipit tempore ipsam iste ipsa, culpa quam vero, dolorem cupiditate. Magni, numquam?<button type="button" class="visit">Visit ›</button><img src="stylesheet/images/cities/delhi.svg"/></p>
+                <br>
+                <i class="fas fa-rocket fa-icon"></i>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <img src="stylesheet/images/cities/lucknow.svg"/>
+                <div>
+                    February 2019
+                </div>
+            </div>
+            <div class="timeline-content">
+                <h2>Nawabo ka Sehar<span>(Lucknow)</span></h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad saepe nulla quibusdam ut. Beatae, facere sequi blanditiis porro suscipit tempore ipsam iste ipsa, culpa quam vero, dolorem cupiditate. Magni, numquam?<button type="button" class="visit">Visit ›</button><img src="stylesheet/images/cities/lucknow.svg"/></p>
+
+                <br>
+                <i class="fas fa-graduation-cap fa-icon"></i>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-date">
+                <img src="stylesheet/images/cities/prayagraj.svg"/>
+                <div>
+                    March 2019
+                </div>
+            </div>
+            <div class="timeline-content">
+                <h2>Devotional Place<span>(Prayagraj)</span></h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad saepe nulla quibusdam ut. Beatae, facere sequi blanditiis porro suscipit tempore ipsam iste ipsa, culpa quam vero, dolorem cupiditate. Magni, numquam?<button type="button" class="visit">Visit ›</button><img src="stylesheet/images/cities/prayagraj.svg"/></p>
+
+                <br>
+                <i class="fas fa-power-off fa-icon"></i>
+            </div>
+        </div>
+
+        <script type="257be86a981729866f2fa61c-text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-83834093-1', 'auto');
+        ga('send', 'pageview');
+
+        </scri>
+        <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js" data-cf-settings="257be86a981729866f2fa61c-|49" defer=""></script>
+        <!-- Time line Html Ends -->
+        <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+        {% comment %} <script src="{%static "chat/js/jquery-3.1.1.min.js"%}"></script> {% endcomment %}
+        <script src="{%static "common.js"%}"></script>
+        <script src="{%static "chat/js/popper.min.js"%}"></script>
+        <script src="{%static "chat/js/bootstrap.min.js"%}"></script>
+        <script src="{%static "chat/js/select2.min.js"%}"></script>
+        <script src="{%static "chat/js/chatBot.js"%}"></script>
+
+    </div>
+
+{% verbatim %}
+    <script id="cungDiaBan" type="text/x-jsrender">
+        <div class="grid cung-top">
+            <div class="col col-2 tooltips" title="Địa chi cung {{:cungTen}}">{{:cungTen}}</div>
+            <div class="col col-8">
+                <span class="cungChu">
+                {{:cungChu}}
+            </span> {{if cungThan == true}}
+                <span class="cungThan label">Thân</span> {{/if}}
+            </div>
+            <div class="col col-2 tooltips" title="Đại hạn {{:cungDaiHan}} - {{:(cungDaiHan+9)}}">{{:cungDaiHan}}</div>
+        </div>
+        <div class="grid cung-middle">
+            <div class="chinhTinh">
+                {{for cungSao}} 
+                {{if saoLoai == 1}}
+                <li class="{{:cssSao}}">{{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                </li>
+                {{/if}} 
+                {{/for}}
+            </div>
+
+            <div class="phuTinh">
+                <div class="saotot">
+                    {{for cungSao}} {{if vongTrangSinh === 0 && saoLoai !==1 && saoLoai
+                    < 10}} <div class="grid">
+                        <div class="col {{:cssSao}}">
+                            {{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                        </div>
+                </div>
+                {{/if}} {{/for}}
+            </div>
+            <div class="saoxau">
+                {{for cungSao}} {{if vongTrangSinh === 0 && saoLoai !==1 && saoLoai > 10}}
+                <div class="grid">
+                    <div class="{{:cssSao}}">
+                        {{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                    </div>
+                </div>
+                {{/if}} {{/for}}
+            </div>
+            <div class="tuanTriet">
+                {{if trietLo == true}}
+                <span class="label label-triet">Triệt</span> {{/if}} {{if tuanTrung == true}}
+                <span class="label label-tuan">Tuần</span> {{/if}}
+
+            </div>
+        </div>
+        </div>
+        <div class="grid cung-bottom">
+            <div class="col col-3 tooltips" title="Tiểu hạn của năm {{:cungTieuHan}}">{{:cungTieuHan}}</div>
+            {{for cungSao}} {{if vongTrangSinh == 1}}
+            <div class="col col-6 {{:cssSao}}">
+                {{:saoTen}}
+            </div>
+            {{/if}} {{/for}}
+            
+            <div class="col col-3 tooltips" title="Cung ({{if cungAmDuong == -1}}âm{{else}}dương{{/if}}), ngũ hành {{:hanhCung}}
+                {{if cungAmDuong == -1}}-{{else}}+{{/if}}{{:hanhCung}}">"
+            </div>
+        </div>
+    </script>
+
+    <script id="vungThienBan" type="text/x-jsrender">
+        <div class="noidung">
+            <div class="header">Ngày xem: {{:today}}</div>
+            <div class="grid">
+                <div class="col col-3 cotTrai">Họ tên</div>
+                <div class="col col-9 cotPhai">{{:ten}}</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Bát tự</div>
+                <div class="col col-9 cotPhai">Năm {{:canNamTen}} {{:chiNamTen}}, tháng {{:canThangTen}} {{:chiThangTen}} {{if thangNhuan == 1}} (nhuận) {{/if}}, ngày {{:canNgayTen}} {{:chiNgayTen}}, giờ {{:gioSinh}}</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Tuổi</div>
+                <div class="col col-9 cotPhai">{{:amDuongNamSinh}} {{:namNu}} ({{:amDuongMenh}})</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Ngày sinh</div>
+                <div class="col col-9 cotPhai">
+                    <div>{{:ngayAm}}/{{:thangAm}}/{{:canNamTen}} {{:chiNamTen}} (Âm lịch)</div>
+                    <div>{{:ngayDuong}}/{{:thangDuong}}/{{:namDuong}} (Dương lịch)</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Bản mệnh</div>
+                <div class="col col-9 cotPhai">
+                    {{:banMenh}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Cục</div>
+                <div class="col col-9 cotPhai">
+                    {{:tenCuc}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Mệnh chủ</div>
+                <div class="col col-9 cotPhai">
+                    {{:menhChu}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Thân chủ</div>
+                <div class="col col-9 cotPhai">
+                    {{:thanChu}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Năm xem hạn</div>
+                <div class="col col-9 cotPhai">
+                    <div>{{:canNamXHTen}} {{:chiNamXHTen}} </div>
+                </div>
+            </div>
+
+            <div class="grid sinhkhac">
+                {{:sinhKhac}}
+            </div>
+
+            <div class="mausac">
+                <div class="grid">
+                    <span class="col col-2">Màu sắc</span>
+                    <span class="col col-2 hanhKim gioithieuhanh">Kim</span>
+                    <span class="col col-2 hanhThuy gioithieuhanh">Thủy</span>
+                    <span class="col col-2 hanhHoa gioithieuhanh">Hỏa</span>
+                    <span class="col col-2 hanhTho gioithieuhanh">Thổ</span>
+                    <span class="col col-2 hanhMoc gioithieuhanh">Mộc</span>
+                </div>
+            </div>
+        </div>
+    </script>
+    
+    
+
+
+{% endverbatim %}
+<!-- <a href="generatePDF()">Dowload PDF</a> -->
+</body>
+
+</html>

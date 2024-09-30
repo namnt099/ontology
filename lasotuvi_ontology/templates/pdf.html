@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lá số tử vi</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
+    <link href="{% static "style.css" %}" rel="stylesheet">
+    <script src="{% static 'client.js' %}"></script>
+     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    {% comment %} <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet"> {% endcomment %}
+    {% comment %} <link href="{%static "chat/css/bootstrap.min.css"%}" rel="stylesheet" type="text/css" /> {% endcomment %}
+    <link href="{%static "chat/css/main.css"%}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link href="{%static "chat/css/select2.min.css"%}" rel="stylesheet" type="text/css"/>
+    <link href="{%static "chat/css/chatBot.css"%}" rel="stylesheet" type="text/css"/>
+    <link href="{%static "chat/css/timeline.css"%}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+    <div class="masthead">
+        <div class="container">
+            <h1 class="wordmark">
+                LÁ SỐ TỬ VI
+            </h1>
+            <div class="formborder">
+                <form id="lstv">
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Họ tên
+                        </div>
+                        <div class="col col-9">
+                            <input type="text" name="hoten" id="hoten">
+                        </div>
+                    </div>
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Giới tính
+                        </div>
+                        <div class="col col-9">
+                            <select name="gioitinh" id="gioitinh">
+                                <option value="nam">Nam</option>
+                                <option value="nu">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Ngày tháng năm sinh
+                        </div>
+                        <div class="col col-5">
+                            <select name="ngaysinh" id="ngaysinh">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                                <option value="24">24</option>
+                                <option value="25">25</option>
+                                <option value="26">26</option>
+                                <option value="27">27</option>
+                                <option value="28">28</option>
+                                <option value="29">29</option>
+                                <option value="30">30</option>
+                                <option value="31">31</option>
+                            </select> /
+                            <select name="thangsinh" id="thangsinh">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select> /
+                            <input type="text" id="namsinh" name="namsinh" placeholder="Năm sinh">
+                        </div>
+
+                        <div class="col col-4">
+                            Âm lịch?
+                            <input type="checkbox" name="amlich">
+                        </div>
+                    </div>
+
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Giờ sinh
+                        </div>
+                        <div class="col col-3">
+                            <select name="giosinh" id="giosinh">
+                                <option selected="selected" value="1">Tí (23g - 1g)</option>
+                                <option value="2">Sửu (1g - 3g)</option>
+                                <option value="3">Dần (3g - 5g)</option>
+                                <option value="4">Mão (5g - 7g)</option>
+                                <option value="5">Thìn (7g - 9g)</option>
+                                <option value="6">Tị (9g - 11g)</option>
+                                <option value="7">Ngọ (11g - 13g)</option>
+                                <option value="8">Mùi (13g - 15g)</option>
+                                <option value="9">Thân (15g - 17g)</option>
+                                <option value="10">Dậu (17g - 19g)</option>
+                                <option value="11">Tuất (19g - 21g)</option>
+                                <option value="12">Hợi (21g - 23g)</option>
+                            </select>
+                        </div>
+
+                        <div class="col col-3">
+                            Múi giờ:
+                            <select name="muigio" id="muigio">
+                                <option value="-12">-12</option>
+                                <option value="-11">-11</option>
+                                <option value="-10">-10</option>
+                                <option value="-9">-9</option>
+                                <option value="-8">-8</option>
+                                <option value="-7">-7</option>
+                                <option value="-6">-6</option>
+                                <option value="-5">-5</option>
+                                <option value="-4">-4</option>
+                                <option value="-3">-3</option>
+                                <option value="-2">-2</option>
+                                <option value="-1">-1</option>
+                                <option value="0">0</option>
+                                <option value="1">+1</option>
+                                <option value="2">+2</option>
+                                <option value="3">+3</option>
+                                <option value="4">+4</option>
+                                <option value="5">+5</option>
+                                <option value="6">+6</option>
+                                <option value="7" selected>+7 (Vietnam)</option>
+                                <option value="8">+8</option>
+                                <option value="9">+9</option>
+                                <option value="10">+10</option>
+                                <option value="11">+11</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Năm xem hạn
+                        </div>
+                        <div class="col col-9"
+                            <select>
+                                <input type="text" id="namxemhan" name="namxemhan" placeholder="Năm xem hạn">
+                            </select>
+                        </div>
+                    </div>
+<!--
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Tài liệu tham khảo
+                        </div>
+                        <div class="col col-9">
+                            <select name="thamkhao" id="thamkhao">
+                                <option value="1">Tất cả</option>
+                                <option value="2">Tử Vi Phú Giải của Thái Vân Trình</option>
+                                <option value="3">Tử Vi Phú Giải của Thái Vân Trình - Tử Vi của Nguyễn Mạnh Bảo</option>
+                                <option value="4">Tử Vi Phú Giải của Thái Vân Trình - Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</option>
+                                <option value="5">Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</option>
+                                <option value="6">Tử vi giảng minh</option>
+                                <option value="7">Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang</option>
+                                <option value="8">Tử Vi Áo Bí Biện Chứng Học</option>
+                                <option value="9">Không rõ nguồn</option>
+                            </select>
+                        </div>
+                    </div>
+                -->
+                    <div class="grid thongtin">
+                        <div class="col col-3">
+                            Tài liệu tham khảo
+                        </div>
+                        <div class="col col-9">
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="1">
+                            <label for="thamkhao">Tất cả</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="2">
+                            <label for="thamkhao">Tử Vi Phú Giải của Thái Vân Trình</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="3">
+                            <label for="thamkhao">Tử Vi của Nguyễn Mạnh Bảo</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="4">
+                            <label for="thamkhao">Tử Vi Đẩu Số của Vân Đằng Thái Thứ Lang</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="5">
+                            <label for="thamkhao">Tử vi giảng minh</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="6">
+                            <label for="thamkhao">Tử vi đẩu số tân biên - Vân Đằng Thái Thứ Lang</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="7">
+                            <label for="thamkhao">Tử Vi Áo Bí Biện Chứng Học</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="8">
+                            <label for="thamkhao">Linh khu thời mệnh lý của Lê Hưng VKD</label><br>
+                            <input type="checkbox" id="thamkhao" name="thamkhao" value="9">
+                            <label for="thamkhao">Không rõ nguồn</label><br>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="anlaso laso border" id="laso">
+        <div class="grid">
+            <div class="col col-3">
+                <div class="container">
+                    <div class="grid diaCung border-bottom" cung-id="6" id="cungTy5">Tỵ</div>
+                    <div class="grid diaCung border-bottom" cung-id="5" id="cungThin">Thìn</div>
+                    <div class="grid diaCung border-bottom inset-border" cung-id="4" id="cungMao">Mão</div>
+                    <div class="grid diaCung" cung-id="3" id="cungDan">Dần</div>
+                </div>
+            </div>
+            <div class="col col-6">
+                <div class="container">
+                    <div class="grid">
+                        <div class="col col-6 diaCung border-left" cung-id="7" id="cungNgo">Ngọ</div>
+                        <div class="col col-6 diaCung border-left" cung-id="8" id="cungMui">Mùi</div>
+                    </div>
+
+                    <div class="grid thienBan border-top border-left border-bottom border-right" id="thienBan">
+
+                    </div>
+                    <div class="grid">
+                        <div class="col col-6 diaCung border-left" cung-id="2" id="cungSuu">
+                            Sửu
+                        </div>
+                        <div class="col col-6 diaCung border-left" cung-id="1" id="cungTy1">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-3">
+                <div class="container">
+                    <div class="grid diaCung border-left border-bottom" cung-id="9" id="cungThan">Thân</div>
+                    <div class="grid diaCung border-bottom" cung-id="10" id="cungDau">Dậu</div>
+                    <div class="grid diaCung border-bottom" cung-id="11" id="cungTuat">Tuất</div>
+                    <div class="grid diaCung border-left" cung-id="12" id="cungHoi">Hợi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="anlaso" id="vunggiaidoan">
+        <h1 class='wordmark'>
+            GIẢI ĐOÁN LÁ SỐ
+        </h1>
+        <div class="noi-dung" id="noi-dung">
+            <!--<h3 class="mucluc" ><a href="#" name="tong-quan">TỔNG QUAN</a> </h3>
+            <div class="tong-quan"></div> -->
+
+            <h3 class="mucluc"><a href="#" name="cung-menh">CUNG MỆNH</a> </h3>
+            <div class="cung-menh"></div>
+
+            <h3 class="mucluc">CHU KỲ CỦA TỬ VI TẠI MỆNH CUNG</a> </h3>
+            <div class="chu-ki-tu-vi"> </div>
+
+            <h3 class="mucluc"><a href="#" name="cung-than">CUNG THÂN</a> </h3>
+            <div class="cung-than"> </div>
+
+            <h3 class="mucluc"><a href="#" name="cung-quan-loc">CUNG QUAN LỘC</a> </h3>
+            <div class="cung-quan-loc"></div> 
+
+            <h3 class="mucluc"><a href="#" name="cung-tai-bach">CUNG TÀI BẠCH</a> </h3>
+            <div class="cung-tai-bach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-thien-di">CUNG THIÊN DI</a> </h3>
+            <div class="cung-thien-di"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phuc-duc">CUNG PHÚC ĐỨC</a> </h3>
+            <div class="cung-phuc-duc"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phu-the">CUNG PHU THÊ</a> </h3>
+            <div class="cung-phu-the"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-tu-tuc">CUNG TỬ TỨC</a> </h3>
+            <div class="cung-tu-tuc"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-dien-trach">CUNG ĐIỀN TRẠCH</a> </h3>
+            <div class="cung-dien-trach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-tat-ach">CUNG TẬT ÁCH</a> </h3>
+            <div class="cung-tat-ach"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-phu-mau">CUNG PHỤ MẪU</a> </h3>
+            <div class="cung-phu-mau"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-huynh-de">CUNG HUYNH ĐỆ</a> </h3>
+            <div class="cung-huynh-de"></div>
+
+            <h3 class="mucluc"><a href="#" name="cung-no-boc">CUNG NÔ BỘC</a> </h3>
+            <div class="cung-no-boc"> </div>
+
+            <!--
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi1">CUNG TÝ</a> </h3>
+            <div class="chu-ki-tu-vi1"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi2">CUNG SỬU</a> </h3>
+            <div class="chu-ki-tu-vi2"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi3">CUNG DẦN</a> </h3>
+            <div class="chu-ki-tu-vi3"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi4">CUNG MÃO</a> </h3>
+            <div class="chu-ki-tu-vi4"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi5">CUNG THÌN</a> </h3>
+            <div class="chu-ki-tu-vi5"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi6">CUNG TỴ</a> </h3>
+            <div class="chu-ki-tu-vi6"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi7">CUNG NGỌ</a> </h3>
+            <div class="chu-ki-tu-vi7"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi8">CUNG MÙI</a> </h3>
+            <div class="chu-ki-tu-vi8"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi9">CUNG THÂN</a> </h3>
+            <div class="chu-ki-tu-vi9"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi10">CUNG DẬU</a> </h3>
+            <div class="chu-ki-tu-vi10"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi11">CUNG TUẤT</a> </h3>
+            <div class="chu-ki-tu-vi11"> </div>
+
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi12">CUNG HỢI</a> </h3>
+            <div class="chu-ki-tu-vi12"> </div>
+            
+            <h3 class="mucluc"><a href="#" name="chu-ki-tu-vi12">MỆNH CUNG</a> </h3> -->
+
+            <h3 class="mucluc"><a href="#" name="nu-menh">NỮ MỆNH</a> </h3>
+            <div class="nu-menh"> </div>
+            <!-- <h3 class="mucluc"><a href="#" name="giai-doan-chung">GIẢI ĐOÁN CHUNG</a> </h3>
+            <div class="giai-doan-chung"> </div> -->
+
+            <!-- <h3 class="mucluc"><a href="#" name="loi-khuyen">LỜI KHUYÊN ỨNG XỬ</a> </h3>
+            <div class="loi-khuyen"></div> -->
+
+            <!--<h3 class="mucluc"><a href="#" name='phu-giai'>KHÁC</a> </h3>
+            <div class="phu-giai"></div> -->
+
+            <h3 class="mucluc">ĐẠI VẬN</h3>
+
+            <!-- <div class="ten-dv1"></div>
+            <div class="dai-van1"></div>
+
+            <div class="ten-dv2"></div>
+            <div class="dai-van2"></div> -->
+
+            <div class="ten-dv3"></div>
+            <div class="dai-van3"></div> 
+
+            <div class="ten-dv4"></div>
+            <div class="dai-van4"></div>
+
+            <div class="ten-dv5"></div>
+            <div class="dai-van5"></div>
+
+            <div class="ten-dv6"></div>
+            <div class="dai-van6"></div>
+
+            <div class="ten-dv7"></div>
+            <div class="dai-van7"></div>
+
+            <div class="ten-dv8"></div>
+            <div class="dai-van8"></div>
+
+            <div class="ten-dv9"></div>
+            <div class="dai-van9"></div>
+
+            <div class="ten-dv10"></div>
+            <div class="dai-van10"></div>
+
+            <div class="ten-dv11"></div>
+            <div class="dai-van11"></div>
+
+            <div class="ten-dv12"></div>
+            <div class="dai-van12"></div>
+
+            <h3 class="mucluc"><a href="#" name='van-han'>VẬN HẠN NĂM XEM HẠN</a> </h3>
+            <div class="van-han"></div>
+
+
+        </div>
+    </div>
+
+
+{% verbatim %}
+    <script id="cungDiaBan" type="text/x-jsrender">
+        <div class="grid cung-top">
+            <div class="col col-2 tooltips" title="Địa chi cung {{:cungTen}}">{{:cungTen}}</div>
+            <div class="col col-8">
+                <span class="cungChu">
+                {{:cungChu}}
+            </span> {{if cungThan == true}}
+                <span class="cungThan label">Thân</span> {{/if}}
+            </div>
+            <div class="col col-2 tooltips" title="Đại hạn {{:cungDaiHan}} - {{:(cungDaiHan+9)}}">{{:cungDaiHan}}</div>
+        </div>
+        <div class="grid cung-middle">
+            <div class="chinhTinh">
+                {{for cungSao}} 
+                {{if saoLoai == 1}}
+                <li class="{{:cssSao}}">{{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                </li>
+                {{/if}} 
+                {{/for}}
+            </div>
+
+            <div class="phuTinh">
+                <div class="saotot">
+                    {{for cungSao}} {{if vongTrangSinh === 0 && saoLoai !==1 && saoLoai
+                    < 10}} <div class="grid">
+                        <div class="col {{:cssSao}}">
+                            {{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                        </div>
+                </div>
+                {{/if}} {{/for}}
+            </div>
+            <div class="saoxau">
+                {{for cungSao}} {{if vongTrangSinh === 0 && saoLoai !==1 && saoLoai > 10}}
+                <div class="grid">
+                    <div class="{{:cssSao}}">
+                        {{:saoTen}} {{if saoDacTinh !== null}} ({{:saoDacTinh}}) {{/if}}
+                    </div>
+                </div>
+                {{/if}} {{/for}}
+            </div>
+            <div class="tuanTriet">
+                {{if trietLo == true}}
+                <span class="label label-triet">Triệt</span> {{/if}} {{if tuanTrung == true}}
+                <span class="label label-tuan">Tuần</span> {{/if}}
+
+            </div>
+        </div>
+        </div>
+        <div class="grid cung-bottom">
+            <div class="col col-3 tooltips" title="Tiểu hạn của năm {{:cungTieuHan}}">{{:cungTieuHan}}</div>
+            {{for cungSao}} {{if vongTrangSinh == 1}}
+            <div class="col col-6 {{:cssSao}}">
+                {{:saoTen}}
+            </div>
+            {{/if}} {{/for}}
+            <div class="col col-3 tooltips" title="Cung ({{if cungAmDuong == -1}}âm{{else}}dương{{/if}}), ngũ hành {{:hanhCung}}
+                {{if cungAmDuong == -1}}-{{else}}+{{/if}}{{:hanhCung}}">"
+            </div>
+        </div>
+    </script>
+
+    <script id="vungThienBan" type="text/x-jsrender">
+        <div class="noidung">
+            <div class="header">Ngày xem: {{:today}}</div>
+            <div class="grid">
+                <div class="col col-3 cotTrai">Họ tên</div>
+                <div class="col col-9 cotPhai">{{:ten}}</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Bát tự</div>
+                <div class="col col-9 cotPhai">Năm {{:canNamTen}} {{:chiNamTen}}, tháng {{:canThangTen}} {{:chiThangTen}} {{if thangNhuan == 1}} (nhuận) {{/if}}, ngày {{:canNgayTen}} {{:chiNgayTen}}, giờ {{:gioSinh}}</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Tuổi</div>
+                <div class="col col-9 cotPhai">{{:amDuongNamSinh}} {{:namNu}} ({{:amDuongMenh}})</div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Ngày sinh</div>
+                <div class="col col-9 cotPhai">
+                    <div>{{:ngayAm}}/{{:thangAm}}/{{:canNamTen}} {{:chiNamTen}} (Âm lịch)</div>
+                    <div>{{:ngayDuong}}/{{:thangDuong}}/{{:namDuong}} (Dương lịch)</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Bản mệnh</div>
+                <div class="col col-9 cotPhai">
+                    {{:banMenh}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Cục</div>
+                <div class="col col-9 cotPhai">
+                    {{:tenCuc}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Mệnh chủ</div>
+                <div class="col col-9 cotPhai">
+                    {{:menhChu}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Thân chủ</div>
+                <div class="col col-9 cotPhai">
+                    {{:thanChu}}
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="col col-3 cotTrai">Năm xem hạn</div>
+                <div class="col col-9 cotPhai">
+                    <div>{{:canNamXHTen}} {{:chiNamXHTen}} </div>
+                </div>
+            </div>
+
+            <div class="grid sinhkhac">
+                {{:sinhKhac}}
+            </div>
+
+            <div class="mausac">
+                <div class="grid">
+                    <span class="col col-2">Màu sắc</span>
+                    <span class="col col-2 hanhKim gioithieuhanh">Kim</span>
+                    <span class="col col-2 hanhThuy gioithieuhanh">Thủy</span>
+                    <span class="col col-2 hanhHoa gioithieuhanh">Hỏa</span>
+                    <span class="col col-2 hanhTho gioithieuhanh">Thổ</span>
+                    <span class="col col-2 hanhMoc gioithieuhanh">Mộc</span>
+                </div>
+            </div>
+        </div>
+    </script>
+{% endverbatim %}
+</body>
+
+</html>

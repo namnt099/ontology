@@ -1,0 +1,13 @@
+Django>=3.2
+django-mssql-backend
+pyodbc
+django-cors-headers
+pandas
+openpyxl
+numpy
+colorama
+xhtml2pdf
+opencv-python
+beautifulsoup4
+requests
+owlready2
